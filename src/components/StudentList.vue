@@ -7,50 +7,50 @@ const newVorname = ref("");
 const newNachname = ref("");
 const newOrt = ref("");
 const newGeburtsDatum = ref(null);
+const baseUrl = "https://pb.seiwald.club/api/collections/4bhk/records"
 
 onMounted(async () => {
 
-    const response = await fetch('https://pb.seiwald.club/api/collections/4bhk/records')
-
-    const data = await response.json()
-
-    studentList.value = data.items
+    getStudents();
 
 })
 
-const addStudent = async () => {
+async function getStudents()
+{
 
-    const response = await fetch('https://pb.seiwald.club/api/collections/4bhk/records', {
+const response = await fetch(baseUrl)
 
-        method: 'POST',
+const data = await response.json()
 
-        headers: {
-
-            'Content-Type': 'application/json'
-
-        },
-
-        body: JSON.stringify({
-
-            vorname: newVorname.value,
-
-            nachname: newNachname.value,
-
-            wohnort: newOrt.value,
-
-            geburtsdatum: newGeburtsDatum.value
-        
-
-        })
-
-    })
-
-    const data = await response.json()
-
-    studentList.value.push(data)
+studentList.value = data.items
 
 }
 
+async function createStudent()
+{
+    const newStudent = {
+            vorname: newVorname.value,
+            nachname: newNachname.value,
+            wohnort: newOrt.value,
+            geburtstag: newGeburtsDatum.value
+    }
+    const response = await fetch(baseUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newStudent)
+    });
+    getStudents();
+}
+
+async function deleteStudent(id)
+{
+    const response = await fetch(baseUrl + "/" + id, {
+        method: "DELETE"
+    });
+    getStudents();
+}
 
 
 </script>
@@ -68,6 +68,7 @@ const addStudent = async () => {
 
             {{ student.vorname }} {{ student.nachname }}
             wohnt in {{ student.wohnort }} und ist am {{ student.geburtstag.substring(0,10) }} geboren.
+            <button @click="deleteStudent(student.id)">X</button>
 
         </li>
 
