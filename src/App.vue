@@ -3,7 +3,7 @@
 import HelloJOHAK from "./components/HelloJOHAK.vue";
 import StudentList from "./components/StudentList.vue";
 import StudentListPocketbase from "./components/StudentListPocketbase.vue";
-import RealtimeChat from "./components/Realtimehat/RealtimeChat.vue";
+import RealtimeChat from "./components/Realtimechat/RealtimeChat.vue";
 
 </script>
 
